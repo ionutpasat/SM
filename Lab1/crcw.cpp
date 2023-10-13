@@ -1,72 +1,72 @@
-#include <iostream>
-#include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <pthread.h>
+#include <time.h>
+#include "sequential_multiplier.h"
 
-int **a;         // Left
-int **b;         // Right
+int **a;         // A
+int **b;         // B
 int **c;         // Result
-int matrix_size; // Size
+int matrix_size;
 
 pthread_barrier_t barrier;
 pthread_spinlock_t **spin;
 
-// Simulate parallel writing to memory
+//populate matrix with random numbers between 1 and 100
+void populate_matrix_random(int **matrix, int rows, int cols) {
+  for (int i = 0; i < rows; i++) {
+    for (int j = 0; j < cols; j++) {
+      matrix[i][j] = rand() % 100 + 1;
+    }
+  }
+}
+
+void print_matrix(int **matrix, int rows, int cols) {
+  for (int i = 0; i < rows; i++) {
+    for (int j = 0; j < cols; j++) {
+      printf("%d ", matrix[i][j]);
+    }
+    printf("\n");
+  }
+}
+
 static void priority_sum(int to_add, int i, int j) {
   pthread_spin_lock(&spin[i][j]);
   c[i][j] += to_add;
   pthread_spin_unlock(&spin[i][j]);
 }
 
-// Args is a pointer to the id of the thread
 static void *threaded_multiply(void *args) {
   int id = *((int *)args);
   int i = (id / matrix_size) % matrix_size;
   int j = id % matrix_size;
   int k = id / (matrix_size * matrix_size);
-  int partial_result;
-  int first_element;
-  int second_element;
+  int aux;
+  int first;
+  int second;
 
-  // All threads at the same time (theoretically)
   pthread_barrier_wait(&barrier);
-  first_element = a[i][k];
+  first = a[i][k];
 
-  // All threads at the same time (theoretically)
   pthread_barrier_wait(&barrier);
-  second_element = b[k][j];
+  second = b[k][j];
 
-  // Temporary storage
-  partial_result = first_element * second_element;
+  aux = first * second;
 
-  // Write to memory using sum
-  priority_sum(partial_result, i, j);
+  priority_sum(aux, i, j);
 
   return NULL;
 }
 
 int main() {
-  // Read from file
-  // First line: matrix_size
-  // Next: matrix_size lines signifing a
-  // Next: matrix_size lines signifing b
-  const char *file = "data.in";
-  FILE *in;
-  int ret;
 
-  in = fopen(file, "r");
-  if (!in) {
-    return 1;
-  }
+  clock_t start, end;
 
-  // Read matrix size
-  ret = fscanf(in, "%d", &matrix_size);
-  if (matrix_size == 0) {
-    printf("Matrix does not exist\n");
-    return 2;
-  }
+  srand(time(NULL));
 
-  // Allocate space for each matrix
+  printf("Enter matrix size: ");
+  scanf("%d", &matrix_size);
+
   a = (int **)calloc(matrix_size, sizeof(int *));
   b = (int **)calloc(matrix_size, sizeof(int *));
   c = (int **)calloc(matrix_size, sizeof(int *));
@@ -90,23 +90,19 @@ int main() {
     }
   }
 
-  // Read the input
-  for (int i = 0; i < matrix_size; ++i) {
-    for (int j = 0; j < matrix_size; ++j) {
-      fscanf(in, "%d", &a[i][j]);
-    }
-  }
+  populate_matrix_random(a, matrix_size, matrix_size);
+  printf("Matrix A:\n");
+  print_matrix(a, matrix_size, matrix_size);
+  printf("\n");
+  populate_matrix_random(b, matrix_size, matrix_size);
+  printf("Matrix B:\n");
+  print_matrix(b, matrix_size, matrix_size);
+  printf("\n");
 
-  for (int i = 0; i < matrix_size; ++i) {
-    for (int j = 0; j < matrix_size; ++j) {
-      fscanf(in, "%d", &b[i][j]);
-    }
-  }
-
-  // Create the threads, the spinlock and the barrier and do parallel work
   const int nr_threads = matrix_size * matrix_size * matrix_size;
   int idx[nr_threads];
   pthread_t tid[nr_threads];
+  int ret;
 
   ret = pthread_barrier_init(&barrier, NULL, nr_threads);
   if (ret != 0) {
@@ -125,6 +121,8 @@ int main() {
     }
   }
 
+  start = clock();
+
   for (int i = 0; i < nr_threads; ++i) {
     idx[i] = i;
     ret = pthread_create(&tid[i], NULL, &threaded_multiply, &idx[i]);
@@ -134,10 +132,11 @@ int main() {
     }
   }
 
-  // Clear parallel structures
   for (int i = 0; i < nr_threads; ++i) {
     pthread_join(tid[i], NULL);
   }
+
+  end = clock();
 
   for (int i = 0; i < matrix_size; ++i) {
     for (int j = 0; j < matrix_size; ++j) {
@@ -148,13 +147,18 @@ int main() {
   pthread_barrier_destroy(&barrier);
 
   // Print the result to console
-  for (int i = 0; i < matrix_size; ++i) {
-    for (int j = 0; j < matrix_size; ++j) {
-      printf("%d ", c[i][j]);
-    }
-    printf("\n");
-  }
+  printf("Result:\n");
+  print_matrix(c, matrix_size, matrix_size);
   printf("\n");
+
+  printf("Time taken: %lf seconds\n\n", ((double)(end - start)) / CLOCKS_PER_SEC);
+
+  // Compare with sequential result
+  start = clock();
+  sequential_multiplier(a, b, matrix_size, matrix_size, matrix_size);
+  end = clock();
+  printf("Sequential time taken: %lf seconds\n\n",
+         ((double)(end - start)) / CLOCKS_PER_SEC);
 
   // Clean up memory
   for (int i = 0; i < matrix_size; ++i) {
@@ -163,10 +167,11 @@ int main() {
     free(c[i]);
     free((void *)spin[i]);
   }
+
   free(a);
   free(b);
   free(c);
   free(spin);
-  fclose(in);
+
   return 0;
 }
