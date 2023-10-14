@@ -41,19 +41,8 @@ static void *threaded_multiply(void *args) {
   int i = (id / matrix_size) % matrix_size;
   int j = id % matrix_size;
   int k = id / (matrix_size * matrix_size);
-  int aux;
-  int first;
-  int second;
 
-  pthread_barrier_wait(&barrier);
-  first = a[i][k];
-
-  pthread_barrier_wait(&barrier);
-  second = b[k][j];
-
-  aux = first * second;
-
-  priority_sum(aux, i, j);
+  priority_sum(a[i][k] * b[k][j], i, j);
 
   return NULL;
 }

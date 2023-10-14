@@ -46,7 +46,7 @@ static void parallel_reduce(int i, int j, int k) {
     if (k % (1 << (m + 1)) == 0) {
       v[i][j][k] += v[i][j][k + (1 << m)];
     }
-  }
+  } 
 }
 
 static void *threaded_multiply(void *args) {
@@ -54,16 +54,8 @@ static void *threaded_multiply(void *args) {
   int i = (id / matrix_size) % matrix_size;
   int j = id % matrix_size;
   int k = id / (matrix_size * matrix_size);
-  int first;
-  int second;
 
-  pthread_barrier_wait(&barrier);
-  first = a[i][k];
-
-  pthread_barrier_wait(&barrier);
-  second = b[k][j];
-
-  v[i][j][k] = first * second;
+  v[i][j][k] = a[i][k] * b[k][j];
 
   parallel_reduce(i, j, k);
 
