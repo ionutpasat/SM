@@ -1,0 +1,38 @@
+Descrieri ale Funcțiilor:
+
+___integer_to_binary(number)___: 
+    Convertește un număr întreg în reprezentare binară truncheat dupa cel mai din stanga bit de 1.
+___shuffle(input, size)___: 
+    Implementează operația de shuffle din labul 3.
+___network(start_int, stop_int, len, nr_floors)___: 
+    Simulează comportamentul rețelei Benes cu intrări furnizate.
+___number_of_figures(number)___: 
+    Calculează numărul de cifre într-un număr întreg.
+___print_binary(number, length)___: 
+    Afișează un număr binar cu o lungime specificată.
+___print_map(size, log_size)___: 
+    Afișează o tabelă cu conexiunile posibile în rețea.
+
+Exemplu de Utilizare:
+
+Enter network maximum dimension (max input): 8
+The chosen network has 5 floors and accepts values bet
+Index  Start  Stop
+ 0      000   000
+ 1      001   001
+ 2      010   010
+ 3      011   011
+ 4      100   100
+ 5      101   101
+ 6      110   110
+ 7      111   111
+Choose number of pairs to enter: 2
+Enter pairs of input and output like: in1 out1 in2 out
+2
+3
+4
+5
+Starting point: 010 and Finish point: 011
+direct direct direct direct invers
+Starting point: 100 and Finish point: 101
+direct direct direct direct invers
