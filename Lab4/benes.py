@@ -153,4 +153,8 @@ if __name__ == "__main__":
         print()
 
         # Input processing done, starting shuffle
+<<<<<<< HEAD
         network(nr_chosen_start[i], nr_chosen_stop[i], max_pow, nr_floors)
+=======
+        network(nr_chosen_start[i], nr_chosen_stop[i], max_pow, nr_floors)
+>>>>>>> 52cbecc03efe32fa4304f1f19704271742c95a63

@@ -1,0 +1,36 @@
+Realizat de: Artemiza Dospinescu 344C3 si Ionut Pasat 344C1
+
+Această aplicație implementează un program care determină traseul de la sursă la 
+destinație într-o rețea Omega dată de dimensiunea 2^𝑘∗ 2^𝑘, unde 𝑘 ≥ 3. 
+Programul citește m perechi de valori, prima reprezentând sursa, iar cea de-a doua destinația.
+
+Funcții:
+----integer_to_binary(number, length)----
+Această funcție convertește un număr în format binar.
+
+----pad_left_zeroes(binary_number, nr_zeroes)----
+Această funcție adaugă zerouri la stânga unui număr binar până la lungimea specificată.
+
+----shuffle(start_int, stop_int, nr_floors)----
+Această funcție determină traseul dintre două etaje (reprezentate sub formă binară). 
+Afisează conexiunile directe sau inverse pentru fiecare etaj.
+
+----number_of_figures(number)----
+Această funcție calculează numărul de cifre într-un număr.
+
+----print_binary(number, length)----
+Această funcție afișează un număr în format binar, completând cu zerouri 
+la stânga până la lungimea specificată.
+
+print_map(size, log_size)
+Această funcție afișează harta indicilor, împreună cu valorile de start și stop
+în format binar.
+
+Utilizare:
+    $ python3 omega.py
+    Introduceți dimensiunea rețelei (numărul de etaje).
+    Selectați un index de start pentru traseu.
+    Selectați un index de stop pentru traseu.
+Observații
+    Dimensiunea rețelei trebuie să fie un număr pozitiv mai mare sau egal cu 3.
+    Valorile de start și stop trebuie să fie între 0 și valoarea maximă acceptată de rețea.
