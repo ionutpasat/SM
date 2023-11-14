@@ -1,0 +1,18 @@
+Laborator realizat de: Artemiza Dospinescu 344C3 si Pasat Ionut 344C1
+
+Programul generează un vector de lungime N (definit în cod) cu elemente aleatoare.
+Fiecare proces își calculează segmentul de lucru pe baza propriului rank
+și a numărului total de procese.
+Elementele sunt distribuite folosind MPI_Bcast și MPI_Scatter.
+Fiecare proces sortează propriul segment de date.
+Rezultatele parțiale sunt colectate folosind MPI_Gather.
+Pe procesul master, rezultatul sortării este comparat cu rezultatul obținut folosind qsort.
+
+Utilizare pe mașina locală: make && make run
+
+Utilizare pe cluster: 
+1) ssh user@fep.grid.pub.ro
+2) creare fisier .c, Makefile si run.sh
+3) make
+4) sbatch -p nehalem -n 4 run.sh
+5) vizualizare output: cat slurm-*****.out

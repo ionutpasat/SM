@@ -1,0 +1,22 @@
+Laborator realizat de: Artemiza Dospinescu 344C3 si Pasat Ionuț 344C1
+
+Inițializare: 
+Programul inițializează două array-uri v și w cu numere întregi aleatoare 
+folosind funcția initArrays.
+
+Sortare paralelă:
+Programul utilizează OpenMP pentru a paraleliza algoritmul de sortare ranksort. 
+Împarte array-ul de intrare v în chunk-uri în funcție de numărul de fire 
+de execuție (NUM_THREADS). Fiecare fir de execuție procesează bucata sa asignată,
+calculează rank-ul fiecărui element și actualizează array-ul de ieșire w.
+
+Verificare: 
+Programul creează o copie a array-ului original v și îl sortează 
+folosind funcția qsort. Apoi, compară array-ul de ieșire w cu copia 
+sortată pentru a verifica corectitudinea sortării ranksort.
+
+Afișarea rezultatelor: 
+Programul afișează dacă sortarea a fost realizată corect și durata de execuție.
+
+Rulare:
+$ make && make run
