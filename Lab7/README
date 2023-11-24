@@ -1,0 +1,14 @@
+Laborator realizat de: Artemiza Dospinescu 344C3 și Pasat Ionuț 344C1
+
+____RANKSORT FOLOSIND PTHREADS____
+
+Inițializare: Programul inițializează doi vectori de întregi (v și res) de dimensiune N, iar v este populat cu valori aleatoare.
+
+Funcția rankSort este executată de fiecare thread. Împarte vectorul de intrare (v) în segmente în funcție de numărul de fire de execuție (NUM_THREADS) și atribuie fiecărui fir de execuție un segment pe care aplică ranksort. După ce fiecare segment este
+sortat, este pus în vectorul res, care la finalul execuției va reprezenta vectorul
+întreg și sortat.
+
+Se măsoară timpul de execuție folosind gettimeofday din time.h și se compară rezultatul cu cel al funcției qsort.
+
+Rulare:
+make
