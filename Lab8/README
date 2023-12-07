@@ -1,0 +1,22 @@
+Laborator realizat de: Artemiza Dospinescu 344C3 și Pasat Ionuț 344C1
+
+____PROTOCOLUL MES(S)I____
+
+    Pentru a simula comportamentul protocolului MESI, am dezvoltat o implementare
+în Python folosind un model de automat cu stări. Scopul principal al programului este 
+să ilustreze comportamentul procesoarelor într-un sistem cu memorie partajată, evidențiind 
+modul în care acestea interacționează între ele și cu magistrala de comunicare.
+La fiecare pas, procesorul care efectuează acțiunea determină mai întâi următorul său pas, 
+după care stările tuturor procesoarelor sunt actualizate.
+
+Rulare:
+1)  $ make install -> pentru a instala tabulate (folosit pentru afisarea tabelului rezultat)
+2)  $ make test -> pentru a rula si vizualiza rezultatul pentru exemplul din laborator
+3)  $ make uninstall -> dezinstaleaza tabulate
+4)  $ python3 mesi.py no_of_processors idx0 r/w idx1 r/w idx2 r/w ... idxn r/w ->
+-> pentru rularea unui test propriu
+    Exemplu rulare de mana test din laborator:
+    $ python3 mesi.py 3 0 r 1 r 2 r 0 r 0 w 0 r 1 w 2 r
+
+!!!MAKE SURE YOUR TERMINAL WINDOW IS STRETCHED ENOUGH SO IT CAN FIT THE GENERATED TABLE!!!
+You can check how a good run should look by looking at the screenshot provided in the archive (example_run.png)
